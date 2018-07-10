@@ -190,9 +190,9 @@ svm_classifier = svm(formula = Survived ~ .,
                      kernel = 'sigmoid')
 
 #Fitting training data to naive bayes
-library(e1071)
-nb_classifier = naiveBayes(Survived ~ .,
-                           data = trainset)
+library(caret)
+nb_classifier = train(x_train, as.factor(y_train), 'nb',trControl=trainControl(method='cv',number=10))
+
 
 #Fitting training data to decision tree
 library(rpart)
@@ -233,8 +233,7 @@ cm_knn <- table(y_test,knn_classifier)    #64% before scalling, After scaling 79
 
 cm_svm <- table(y_test, svm_pred)         #61% before scalling, After Scaling 73%, After feature selection 72%
 
-# nb_log <- ifelse(nb_pred > 0.50, "YES", "NO")
-# cm_nb <- table(y_test, nb_log)           
+cm_nb <- table(y_test, nb_pred)           #80% accuracy          
 
 
 cm_dt <- table(y_test, dt_pred)            #79% accuracy before feature selection
